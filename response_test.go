@@ -350,6 +350,28 @@ func TestMarshall_invalidIDType(t *testing.T) {
 	}
 }
 
+type goodIDStruct struct {
+	ID bool `jsonapi:"primary,cars"`
+}
+
+func (g goodIDStruct) GetID() string {
+	if g.ID {
+		return "1"
+	}
+	return "0"
+}
+
+func TestMarshall_IDTypeImplementsMarshalIdentifier(t *testing.T) {
+	o := &goodIDStruct{ID: true}
+
+	out := bytes.NewBuffer(nil)
+	if err := MarshalPayload(out, o); err != nil {
+		t.Fatalf(
+			"Was expecting no error, got `%s`", err,
+		)
+	}
+}
+
 func TestOmitsEmptyAnnotation(t *testing.T) {
 	book := &Book{
 		Author:      "aren55555",

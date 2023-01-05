@@ -2,6 +2,11 @@ package jsonapi
 
 import "fmt"
 
+// The MarshalIdentifier interface is used to support retrieving IDs from resources.
+type MarshalIdentifier interface {
+	GetID() string
+}
+
 // Payloader is used to encapsulate the One and Many payload types
 type Payloader interface {
 	clearIncluded()
